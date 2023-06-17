@@ -1,25 +1,44 @@
 package diploma.project.controller;
 
-// @RestController
-// @RequestMapping("/users")
-// @RequiredArgsConstructor
-// public class UserController {
-// private final UserService service;
+import java.util.List;
+import java.util.UUID;
 
-// @GetMapping
-// public List<User> getAll() {
-// return service.getAll()
-// }
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-// @GetMapping("/{id}")
-// public User getOne(UUID id) {
-// return repository.findById(id).orElseThrow(() -> new
-// UserNotFoundException(id));
-// }
+import diploma.project.data.User;
+import diploma.project.dto.UserDto;
+import diploma.project.service.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
-// @PostMapping
-// public User createUser(UserDto userDto) {
+@RestController
+@RequestMapping("/users")
+@RequiredArgsConstructor
+public class UserController {
+    private final ModelMapper mapper;
+    private final UserService service;
 
-// }
+    @GetMapping
+    public ResponseEntity<List<User>> getAll() {
+        return ResponseEntity.ok().body(service.getAllUsers());
+    }
 
-// }
+    @GetMapping("/{id}")
+    public User getOne(@PathVariable UUID id) {
+        return service.getUserById(id);
+    }
+
+    @PostMapping
+    public User createUser(@Valid @RequestBody UserDto userDto) {
+        User user = mapper.map(userDto, User.class);
+        return service.createUser(user);
+    }
+
+}
