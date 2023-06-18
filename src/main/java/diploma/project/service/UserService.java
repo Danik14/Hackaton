@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import diploma.project.data.User;
-import diploma.project.enums.UserAlreadyExistsType;
 import diploma.project.exception.UserAlreadyExistsException;
 import diploma.project.exception.UserNotFoundException;
 import diploma.project.repository.UserRepository;
@@ -21,9 +20,9 @@ public class UserService implements IUserService {
 
     public User createUser(User user) {
         if (repository.existsByEmail(user.getEmail())) {
-            throw new UserAlreadyExistsException(UserAlreadyExistsType.EMAIL, user.getEmail());
+            throw new UserAlreadyExistsException("User with such email already exists");
         } else if (repository.existsByUsername(user.getUsername())) {
-            throw new UserAlreadyExistsException(UserAlreadyExistsType.USERNAME, user.getEmail());
+            throw new UserAlreadyExistsException("User with such username already exists");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

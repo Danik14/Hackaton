@@ -25,14 +25,19 @@ public class UserController {
     private final ModelMapper mapper;
     private final UserService service;
 
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<User>> getAll() {
         return ResponseEntity.ok().body(service.getAllUsers());
     }
 
-    @GetMapping("/{id}")
-    public User getOne(@PathVariable UUID id) {
-        return service.getUserById(id);
+    @GetMapping("/{uuid}")
+    public ResponseEntity<User> getOne(@PathVariable String uuid) {
+        UUID id = UUID.fromString(uuid);
+        if (uuid == null) {
+            throw new IllegalArgumentException("Invalid UUID format");
+        }
+
+        return ResponseEntity.ok().body(service.getUserById(id));
     }
 
     @PostMapping
