@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.hibernate.validator.constraints.Length;
 
+import diploma.project.enums.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +25,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Column(name = "role")
+    private UserRole role = UserRole.USER;
 
     @Column(name = "username", length = 35)
     @Length(min = 3, max = 35)

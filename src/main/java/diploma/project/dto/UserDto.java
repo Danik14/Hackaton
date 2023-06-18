@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-    @Length(min = 3, max = 35)
+    @Length(min = 3, max = 35, message = "username must be between 3 and 35")
     private String username;
 
-    @Email
+    @Email(message = "valid email")
     private String email;
 
-    @Length(min = 8, max = 25)
+    @Length(min = 8, max = 25, message = "password must be between 8 and 25")
     private String password;
 }

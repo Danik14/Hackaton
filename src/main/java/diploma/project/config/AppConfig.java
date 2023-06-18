@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import diploma.project.data.User;
+import diploma.project.enums.UserRole;
 import diploma.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -26,8 +27,10 @@ public class AppConfig {
     @Bean
     public CommandLineRunner generateUsers() {
         return args -> {
-            User user1 = new User(UUID.randomUUID(), "John", "john@example.com", passwordEncoder.encode("password1"));
-            User user2 = new User(UUID.randomUUID(), "Jane", "jane@example.com", passwordEncoder.encode("password2"));
+            User user1 = new User(UUID.randomUUID(), UserRole.ADMIN, "John", "john@example.com",
+                    passwordEncoder.encode("password1"));
+            User user2 = new User(UUID.randomUUID(), UserRole.USER, "Jane", "jane@example.com",
+                    passwordEncoder.encode("password2"));
 
             repository.save(user1);
             repository.save(user2);

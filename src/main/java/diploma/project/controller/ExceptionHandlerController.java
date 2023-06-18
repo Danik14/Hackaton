@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import diploma.project.dto.ErrorDto;
+import diploma.project.exception.UserAlreadyExistsException;
 import diploma.project.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -33,6 +34,18 @@ public class ExceptionHandlerController {
                         .timestamp(new Date())
                         .status(HttpStatus.NOT_FOUND.value())
                         .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                        .path(request.getServletPath())
+                        .message(e.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler({ UserAlreadyExistsException.class })
+    public ResponseEntity<?> handleAlreadyExists(HttpServletRequest request, RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorDto.builder()
+                        .timestamp(new Date())
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                         .path(request.getServletPath())
                         .message(e.getMessage())
                         .build());
