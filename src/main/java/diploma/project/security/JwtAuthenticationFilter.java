@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final JwtService jwtService;
 
     // Might need to remove @NonNulls because there are basic constraints
     // defined by the parent class, which should be considered when overriding
