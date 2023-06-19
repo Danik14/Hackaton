@@ -69,4 +69,15 @@ public class UserController {
         return ResponseEntity.created(createdUri).body(createdUser);
     }
 
+    public ResponseEntity<?> deleteUser(@PathVariable String uuid) {
+        UUID id = UUID.fromString(uuid);
+        if (uuid == null) {
+            throw new IllegalArgumentException("Invalid UUID format");
+        }
+
+        service.deleteUser(id);
+
+        return ResponseEntity.ok().body("User was successfuly deleted");
+    }
+
 }
