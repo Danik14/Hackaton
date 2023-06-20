@@ -37,18 +37,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with such email not found"));
     }
 
     @Override
     public User getUserById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new UserNotFoundException());
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException("User with such id not found"));
     }
 
     @Override
     public void deleteUser(UUID id) {
         if (!repository.existsById(id)) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("User with such id not found");
         }
         repository.deleteById(id);
     }

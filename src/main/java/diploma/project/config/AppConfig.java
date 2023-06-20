@@ -6,10 +6,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import diploma.project.data.User;
 import diploma.project.enums.UserRole;
+import diploma.project.exception.UserNotFoundException;
 import diploma.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -35,5 +37,11 @@ public class AppConfig {
             repository.save(user1);
             repository.save(user2);
         };
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return email -> repository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 }

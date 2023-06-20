@@ -18,10 +18,21 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "GACHI_B INDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERA";
+    private static final String SECRET_KEY = "GACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERAGACHI_BINDERA";
 
-    public String extractUserName(String token) {
+    public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    // Using method reference of a built in mehtod
+    // to extract a expiration date
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     // Function with generic return type
@@ -39,19 +50,8 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUserName(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-    }
-
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
-    }
-
-    // Using method reference of a built in mehtod
-    // to extract a expiration date
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
     }
 
     // Generation of token
