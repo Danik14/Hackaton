@@ -66,7 +66,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 // setting when this jwt was created for further validation
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000_000 * 60 * 24))
                 // using signature to sign a token and settin an algorithm
                 .signWith(getSigInKey(), SignatureAlgorithm.HS256)
                 .compact();
