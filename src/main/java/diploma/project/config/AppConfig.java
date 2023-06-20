@@ -1,9 +1,5 @@
 package diploma.project.config;
 
-import java.util.UUID;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,10 +7,9 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import diploma.project.data.User;
-import diploma.project.enums.UserRole;
 import diploma.project.exception.UserNotFoundException;
 import diploma.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,24 +18,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AppConfig {
     private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
+
+    // @Bean
+    // public ModelMapper modelMapper() {
+    // return new ModelMapper();
+    // }
 
     @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
-    @Bean
-    public CommandLineRunner generateUsers() {
-        return args -> {
-            User user1 = new User(UUID.randomUUID(), UserRole.ADMIN, "John", "john@example.com",
-                    passwordEncoder.encode("password1"));
-            User user2 = new User(UUID.randomUUID(), UserRole.USER, "Jane", "jane@example.com",
-                    passwordEncoder.encode("password2"));
-
-            repository.save(user1);
-            repository.save(user2);
-        };
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
     }
 
     @Bean
@@ -54,7 +40,7 @@ public class AppConfig {
     public AuthenticationProvider authConfigProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 

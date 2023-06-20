@@ -6,7 +6,7 @@ import java.util.UUID;
 import diploma.project.data.User;
 
 public interface UserService {
-    User createUser(User user);
+    // User createUser(User user);
 
     List<User> getAllUsers();
 

@@ -3,11 +3,9 @@ package diploma.project.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import diploma.project.data.User;
-import diploma.project.exception.UserAlreadyExistsException;
 import diploma.project.exception.UserNotFoundException;
 import diploma.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,19 +14,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
+    // private final PasswordEncoder passwordEncoder;
 
-    public User createUser(User user) {
-        if (repository.existsByEmail(user.getEmail())) {
-            throw new UserAlreadyExistsException("User with such email already exists");
-        } else if (repository.existsByUsername(user.getUsername())) {
-            throw new UserAlreadyExistsException("User with such username already exists");
-        }
+    // public User createUser(User user) {
+    // if (repository.existsByEmail(user.getEmail())) {
+    // throw new UserAlreadyExistsException("User with such email already exists");
+    // } else if (repository.existsByUsername(user.getUsername())) {
+    // throw new UserAlreadyExistsException("User with such username already
+    // exists");
+    // }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    // user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return repository.save(user);
-    }
+    // return repository.save(user);
+    // }
 
     @Override
     public List<User> getAllUsers() {
