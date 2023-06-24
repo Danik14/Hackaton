@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import template.jwttemplate.dto.ErrorDto;
 import template.jwttemplate.exception.UserAlreadyExistsException;
@@ -46,6 +47,18 @@ public class ExceptionHandlerController {
                                                 .timestamp(new Date())
                                                 .status(HttpStatus.BAD_REQUEST.value())
                                                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                                                .path(request.getServletPath())
+                                                .message(e.getMessage())
+                                                .build());
+        }
+
+        @ExceptionHandler({ ExpiredJwtException.class })
+        public ResponseEntity<?> handleExpiredToken(HttpServletRequest request, ExpiredJwtException e) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                                ErrorDto.builder()
+                                                .timestamp(new Date())
+                                                .status(HttpStatus.UNAUTHORIZED.value())
+                                                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
                                                 .path(request.getServletPath())
                                                 .message(e.getMessage())
                                                 .build());

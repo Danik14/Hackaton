@@ -30,9 +30,12 @@ public class ProjectApplication {
 					passwordEncoder.encode("password1"));
 			User user2 = new User(UUID.randomUUID(), UserRole.USER, "Jane", "jane@example.com",
 					passwordEncoder.encode("password2"));
+			User user3 = new User(UUID.randomUUID(), UserRole.ADMIN, "Ryan", "gosling@example.com",
+					passwordEncoder.encode("password3"));
 
 			repository.save(user1);
 			repository.save(user2);
+			repository.save(user3);
 		};
 	}
 

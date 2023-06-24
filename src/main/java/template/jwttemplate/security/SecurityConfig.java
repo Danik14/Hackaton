@@ -1,5 +1,7 @@
 package template.jwttemplate.security;
 
+import static template.jwttemplate.enums.Role.ADMIN;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -29,6 +31,7 @@ public class SecurityConfig {
                 // if i remove it every uknown request will get 403 instead of 404
                 .requestMatchers("/api/v1/auth/**", "/error/**")
                 .permitAll()
+                .requestMatchers("/api/v1/admin/**").hasAnyRole(ADMIN.name())
                 // any OTHER request
                 .anyRequest()
                 // should be authenticated
