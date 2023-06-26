@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import template.jwttemplate.dto.AuthenticationRequest;
+import template.jwttemplate.dto.AuthenticationRequestDto;
 import template.jwttemplate.dto.AuthenticationResponse;
 import template.jwttemplate.dto.RegistrationRequest;
 import template.jwttemplate.service.AuthenticationService;
@@ -61,7 +61,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(
-            @RequestBody(required = false) AuthenticationRequest request,
+            @RequestBody(required = false) AuthenticationRequestDto request,
             BindingResult bindingResult) {
 
         if (request == null) {

@@ -6,18 +6,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
-import template.jwttemplate.exception.UserNotFoundException;
-import template.jwttemplate.repository.UserRepository;
+import template.jwttemplate.security.UserDetailsServiceImpl;
 
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
-    private final UserRepository repository;
+    // private final UserRepository repository;
+    private final UserDetailsServiceImpl userDetailsService;
 
     // @Bean
     // public ModelMapper modelMapper() {
@@ -29,17 +28,17 @@ public class AppConfig {
         return new BCryptPasswordEncoder(12);
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return email -> repository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-    }
+    // @Bean
+    // public UserDetailsService userDetailsService() {
+    // return email -> repository.findByEmail(email)
+    // .orElseThrow(() -> new UserNotFoundException("User not found"));
+    // }
 
     // DAO responsible for fetching user details and encoding password
     @Bean
     public AuthenticationProvider authConfigProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

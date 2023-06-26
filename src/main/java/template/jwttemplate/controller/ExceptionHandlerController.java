@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -53,12 +54,24 @@ public class ExceptionHandlerController {
         }
 
         @ExceptionHandler({ ExpiredJwtException.class })
-        public ResponseEntity<?> handleExpiredToken(HttpServletRequest request, ExpiredJwtException e) {
+        public ResponseEntity<?> handleExpiredToken(HttpServletRequest request, RuntimeException e) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                                 ErrorDto.builder()
                                                 .timestamp(new Date())
                                                 .status(HttpStatus.UNAUTHORIZED.value())
                                                 .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                                                .path(request.getServletPath())
+                                                .message(e.getMessage())
+                                                .build());
+        }
+
+        @ExceptionHandler({ BadCredentialsException.class })
+        public ResponseEntity<?> handleBadCredentials(HttpServletRequest request, RuntimeException e) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                                ErrorDto.builder()
+                                                .timestamp(new Date())
+                                                .status(HttpStatus.FORBIDDEN.value())
+                                                .error(HttpStatus.FORBIDDEN.getReasonPhrase())
                                                 .path(request.getServletPath())
                                                 .message(e.getMessage())
                                                 .build());

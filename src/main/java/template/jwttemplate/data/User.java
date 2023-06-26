@@ -1,13 +1,10 @@
 package template.jwttemplate.data;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import template.jwttemplate.enums.UserRole;
+import template.jwttemplate.enums.Role;
 
 @Entity
 @Table(name = "users")
@@ -30,14 +27,14 @@ import template.jwttemplate.enums.UserRole;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;
+    private Role role;
 
     @Column(name = "username", length = 35)
     @Length(min = 3, max = 35)
@@ -50,33 +47,12 @@ public class User implements UserDetails {
     @Column(name = "hashed_password")
     private String password;
 
-    @Override
+    @Column(name = "is_active")
+    public boolean isActive() {
+        return true;
+    }
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true; // TODO
+        return role.getAuthorities();
     }
 }
