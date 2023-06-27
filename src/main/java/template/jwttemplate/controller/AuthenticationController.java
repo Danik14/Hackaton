@@ -72,4 +72,9 @@ public class AuthenticationController {
         }
         return ResponseEntity.ok(service.authenticate(request));
     }
+
+    // @PostMapping(path = "/verify")
+    // public String confirm(@RequestParam("token") String token) {
+    // return registrationService.confirmToken(token);
+    // }
 }

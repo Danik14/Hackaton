@@ -48,9 +48,10 @@ public class User {
     private String password;
 
     @Column(name = "is_active")
-    public boolean isActive() {
-        return true;
-    }
+    private boolean isActive;
+
+    @Column(name = "is_verified")
+    private boolean isVerified;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
