@@ -2,10 +2,12 @@ package template.jwttemplate;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
@@ -15,9 +17,17 @@ import template.jwttemplate.repository.UserRepository;
 
 @SpringBootApplication
 @RequiredArgsConstructor
+@PropertySource(value = ".env", encoding = "UTF-8")
 public class ProjectApplication {
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
+	// private final EmailSenderService emailSenderService;
+
+	@Value("${spring.mail.username}")
+	private String username;
+
+	@Value("${spring.mail.password}")
+	private String password;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args);
@@ -42,6 +52,9 @@ public class ProjectApplication {
 			repository.save(user3);
 			repository.save(user4);
 			repository.save(user5);
+
+			// emailSenderService.sendWelcomeEmail("mrvirtus3@gmail.com", "Email testing",
+			// "Welcome to the club, buddy");
 		};
 	}
 
