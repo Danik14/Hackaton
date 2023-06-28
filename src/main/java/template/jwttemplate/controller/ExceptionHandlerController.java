@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -72,6 +73,19 @@ public class ExceptionHandlerController {
                                                 .timestamp(new Date())
                                                 .status(HttpStatus.FORBIDDEN.value())
                                                 .error(HttpStatus.FORBIDDEN.getReasonPhrase())
+                                                .path(request.getServletPath())
+                                                .message(e.getMessage())
+                                                .build());
+        }
+
+        @ExceptionHandler(ResponseStatusException.class)
+        public ResponseEntity<ErrorDto> handleConflict(HttpServletRequest request, RuntimeException e) {
+                return ResponseEntity
+                                .status(HttpStatus.CONFLICT)
+                                .body(ErrorDto.builder()
+                                                .timestamp(new Date())
+                                                .status(HttpStatus.CONFLICT.value())
+                                                .error(HttpStatus.CONFLICT.getReasonPhrase())
                                                 .path(request.getServletPath())
                                                 .message(e.getMessage())
                                                 .build());

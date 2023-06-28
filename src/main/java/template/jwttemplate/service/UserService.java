@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import template.jwttemplate.data.User;
+import template.jwttemplate.dto.UserUpdateDto;
 
 public interface UserService {
     // User createUser(User user);
@@ -17,4 +18,6 @@ public interface UserService {
     void deleteUser(UUID id);
 
     int verifyUserEmail(String email);
+
+    User updateUser(User user, UserUpdateDto userUpdateDto);
 }
