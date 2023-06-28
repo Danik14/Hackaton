@@ -15,4 +15,6 @@ public interface UserService {
     User getUserById(UUID id);
 
     void deleteUser(UUID id);
+
+    int verifyUserEmail(String email);
 }

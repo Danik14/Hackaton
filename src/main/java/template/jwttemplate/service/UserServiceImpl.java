@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import template.jwttemplate.data.User;
+import template.jwttemplate.enums.UserRole;
 import template.jwttemplate.exception.UserNotFoundException;
 import template.jwttemplate.repository.UserRepository;
 
@@ -51,5 +52,10 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User with such id not found");
         }
         repository.deleteById(id);
+    }
+
+    @Override
+    public int verifyUserEmail(String email) {
+        return repository.verifyEmail(email, UserRole.VERIFIED_USER);
     }
 }

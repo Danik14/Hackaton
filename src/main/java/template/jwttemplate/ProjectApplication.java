@@ -12,9 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 import template.jwttemplate.data.User;
-import template.jwttemplate.enums.Role;
+import template.jwttemplate.enums.UserRole;
 import template.jwttemplate.repository.UserRepository;
-import template.jwttemplate.service.EmailService;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ import template.jwttemplate.service.EmailService;
 public class ProjectApplication {
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
-	private final EmailService emailService;
+	// private final EmailService emailService;
 
 	@Value("${spring.mail.username}")
 	private String username;
@@ -37,16 +36,21 @@ public class ProjectApplication {
 	@Bean
 	public CommandLineRunner generateUsers() {
 		return args -> {
-			User user1 = new User(UUID.randomUUID(), Role.USER, "John", "john@example.com",
-					passwordEncoder.encode("password1"), true, true);
-			User user2 = new User(UUID.randomUUID(), Role.USER, "Jane", "jane@example.com",
-					passwordEncoder.encode("password2"), true, true);
-			User user3 = new User(UUID.randomUUID(), Role.ADMIN, "Ryan", "gosling@example.com",
-					passwordEncoder.encode("password3"), true, true);
-			User user4 = new User(UUID.randomUUID(), Role.USER, "Papzan", "papzan@example.com",
-					passwordEncoder.encode("password4"), true, true);
-			User user5 = new User(UUID.randomUUID(), Role.ADMIN, "Danik", "danik@example.com",
-					passwordEncoder.encode("danik12345"), true, true);
+			User user1 = new User(UUID.randomUUID(), UserRole.USER, "John",
+					"john@example.com",
+					passwordEncoder.encode("password1"), true);
+			User user2 = new User(UUID.randomUUID(), UserRole.USER, "Jane",
+					"jane@example.com",
+					passwordEncoder.encode("password2"), true);
+			User user3 = new User(UUID.randomUUID(), UserRole.ADMIN, "Ryan",
+					"gosling@example.com",
+					passwordEncoder.encode("password3"), true);
+			User user4 = new User(UUID.randomUUID(), UserRole.USER, "Papzan",
+					"papzan@example.com",
+					passwordEncoder.encode("password4"), true);
+			User user5 = new User(UUID.randomUUID(), UserRole.ADMIN, "Danik",
+					"danik@example.com",
+					passwordEncoder.encode("danik12345"), true);
 
 			repository.save(user1);
 			repository.save(user2);

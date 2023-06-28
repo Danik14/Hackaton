@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import template.jwttemplate.enums.Role;
+import template.jwttemplate.enums.UserRole;
 
 @Entity
 @Table(name = "users")
@@ -32,26 +32,26 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole role;
 
-    @Column(name = "username", length = 35)
+    @Column(name = "username", length = 35, nullable = false)
     @Length(min = 3, max = 35)
     private String username;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     @Email
     private String email;
 
-    @Column(name = "hashed_password")
+    @Column(name = "hashed_password", nullable = false)
     private String password;
 
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    @Column(name = "is_verified")
-    private boolean isVerified;
+    // @Column(name = "is_verified")
+    // private boolean isVerified;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();

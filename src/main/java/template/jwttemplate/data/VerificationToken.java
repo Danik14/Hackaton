@@ -17,16 +17,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "confirmation_tokens")
+@Table(name = "verification_tokens")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConfirmationToken {
+public class VerificationToken {
 
     @Id
-    @SequenceGenerator(name = "confirmation_token_sequence", sequenceName = "confirmation_token_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "confirmation_token_sequence")
+    @SequenceGenerator(name = "verification_tokens_sequence", sequenceName = "verification_tokens_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verification_tokens_sequence")
     private Long id;
 
     @Column(nullable = false)
@@ -38,13 +38,13 @@ public class ConfirmationToken {
     @Column(nullable = false)
     private LocalDateTime expiresAt;
 
-    private LocalDateTime confirmedAt;
+    private LocalDateTime verifiedAt;
 
     @ManyToOne
-    @JoinColumn(nullable = false, name = "app_user_id")
+    @JoinColumn(nullable = false, name = "users_id")
     private User user;
 
-    public ConfirmationToken(String token,
+    public VerificationToken(String token,
             LocalDateTime createdAt,
             LocalDateTime expiresAt,
             User user) {

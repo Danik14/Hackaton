@@ -1,6 +1,7 @@
 package template.jwttemplate.config;
 
-import static template.jwttemplate.enums.Role.ADMIN;
+import static template.jwttemplate.enums.UserRole.ADMIN;
+import static template.jwttemplate.enums.UserRole.VERIFIED_USER;
 
 import java.util.List;
 
@@ -34,10 +35,11 @@ public class SecurityConfig {
                                 .disable()
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers("/api/v1/admin/**").hasRole(ADMIN.name())
+                                                .requestMatchers("/api/v1/verified/**").hasRole(VERIFIED_USER.name())
                                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                                 // /error/** is a default endpoint for springs handler
                                                 // if i remove it every uknown request will get 403 instead of 404
-                                                .requestMatchers("/error/**").permitAll()
+                                                .requestMatchers("/error/**", "/api/v1/healthcheck").permitAll()
                                                 // any other request should be authenticated
                                                 .anyRequest().authenticated())
                                 .sessionManagement()

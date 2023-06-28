@@ -4,6 +4,10 @@ import static template.jwttemplate.enums.Permission.ADMIN_CREATE;
 import static template.jwttemplate.enums.Permission.ADMIN_DELETE;
 import static template.jwttemplate.enums.Permission.ADMIN_READ;
 import static template.jwttemplate.enums.Permission.ADMIN_UPDATE;
+import static template.jwttemplate.enums.Permission.VERIFIED_CREATE;
+import static template.jwttemplate.enums.Permission.VERIFIED_DELETE;
+import static template.jwttemplate.enums.Permission.VERIFIED_READ;
+import static template.jwttemplate.enums.Permission.VERIFIED_UPDATE;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,9 +20,15 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum Role {
+public enum UserRole {
 
     USER(Collections.emptySet()),
+    VERIFIED_USER(
+            Set.of(
+                    VERIFIED_READ,
+                    VERIFIED_UPDATE,
+                    VERIFIED_DELETE,
+                    VERIFIED_CREATE)),
     ADMIN(
             Set.of(
                     ADMIN_READ,

@@ -1,17 +1,17 @@
-# spring.mail.properties.mail.smtp.auth=true
-# spring.mail.properties.mail.smtp.starttls.enable=true
-
 server:
+  port: 8080
+
   error:
     include-message: always
     include-binding-errors: always
 
 spring:
-  # datasource:
-  #   password:
-  #   url: jdbc:postgresql://localhost:5432/registration
-  #   username:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/registration
+    username: web
+    password: admin
   jpa:
+    generate-ddl: true # encountered a problem where tables were not auto-created, this solved the problem
     hibernate:
       ddl-auto: create-drop
     properties:

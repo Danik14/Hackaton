@@ -33,8 +33,8 @@ public class EmailService {
         }
     }
 
-    public void sendConfirmEmail(String toEmail) {
-        send(toEmail, buildEmail(toEmail, toEmail));
+    public void sendVerificationEmail(String toEmail, String username, String link) {
+        send(toEmail, buildVerificationEmail(username, link));
     }
 
     // Load the image from the resources folder
@@ -44,7 +44,7 @@ public class EmailService {
     // // Add the image as an attachment
     // helper.addAttachment("image.png", imageResource);
 
-    private String buildEmail(String name, String link) {
+    private String buildVerificationEmail(String name, String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +

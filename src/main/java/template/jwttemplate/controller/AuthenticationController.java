@@ -6,9 +6,11 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,12 +20,15 @@ import template.jwttemplate.dto.AuthenticationRequestDto;
 import template.jwttemplate.dto.AuthenticationResponse;
 import template.jwttemplate.dto.RegistrationRequest;
 import template.jwttemplate.service.AuthenticationService;
+import template.jwttemplate.service.VerificationTokenService;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    private final AuthenticationService service;
+    private final AuthenticationService authenticationService;
+
+    private final VerificationTokenService verificationTokenService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(
@@ -49,7 +54,7 @@ public class AuthenticationController {
         }
 
         // User user = mapper.map(userDto, User.class);
-        AuthenticationResponse response = service.register(registerRequest);
+        AuthenticationResponse response = authenticationService.register(registerRequest);
 
         // Build the URI for the created resource
         // UriComponents uriComponents =
@@ -70,11 +75,11 @@ public class AuthenticationController {
             error.put("message", "Request body is missing");
             return ResponseEntity.badRequest().body(error);
         }
-        return ResponseEntity.ok(service.authenticate(request));
+        return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
-    // @PostMapping(path = "/verify")
-    // public String confirm(@RequestParam("token") String token) {
-    // return registrationService.confirmToken(token);
-    // }
+    @GetMapping(path = "/verify")
+    public String verify(@RequestParam("token") String token) {
+        return verificationTokenService.verifyToken(token);
+    }
 }
